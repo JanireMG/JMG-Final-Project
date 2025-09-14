@@ -27,25 +27,18 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-
-    img{
-        width: 150px;
-        height: auto;
-        border-radius: 10px;
-
-    }
 }
-.animecontainerColumns {
+.animeContainerColumns {
     border-radius: 10px;
     padding: 10px;
     width: 200px;
     text-align: center;
     background-color: rgba(variables.$light-purple, 0.25);
 
-    img{
-        width: 150px;
-        height: 210px;
-        border-radius: 10px;
-    }
+}
 
+.animeImg{  
+    width: 150px;
+    height: 210px;
+    border-radius: 10px; 
 }

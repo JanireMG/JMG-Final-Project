@@ -62,7 +62,7 @@ export default class HomeContainer extends Component {
                             ) : (
                                 <div className='animeContainer'>
                                     {topAnimes.map((animeItem) => (
-                                        <div className='animecontainerColumns' key={animeItem.mal_id}>
+                                        <div className='animeContainerColumns' key={animeItem.mal_id}>
                                             {animeItem.title}<br></br>
                                                 <img className='animeImg'
                                                     src={animeItem.images.jpg.image_url}
@@ -83,7 +83,7 @@ export default class HomeContainer extends Component {
                             ) : (
                                 <div className='animeContainer'>
                                     {lastAnimes.map((animeItem) => (
-                                        <div className='animecontainerColumns' key={animeItem.mal_id}>
+                                        <div className='animeContainerColumns' key={animeItem.mal_id}>
                                             {animeItem.title}<br></br>
                                                 <img className='animeImg'
                                                     src={animeItem.images.jpg.image_url}

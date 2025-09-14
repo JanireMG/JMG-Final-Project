@@ -1,49 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Searchbar from "./Searchbar";
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
-
-export default function SearchbarContent({ onSearch }) {
-    const query = useQuery();
-    const initialQuery = query.get("q") || "";
+export default function SearchbarContent() {
+    const location = useLocation();
+    const useParams = new URLSearchParams(location.search);
+    const searchQuery = useParams.get('query') || '';
+    
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (!initialQuery) return;
+        if (!searchQuery) return;
         
         setLoading(true);
         
-        fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(initialQuery)}`)
+        fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(searchQuery)}`)
             .then((response) => response.json())
             .then((data) => {
-                const results = data.data || [];
-                setSearchResults(results);
+                setSearchResults(data.data || []);
                 setLoading(false);
-
-                if (onSearch) onSearch(results);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
                 setLoading(false);
             });
-    }, [initialQuery, onSearch]);
+    }, [searchQuery]);
 
-        return (
-            <div className="searchResults">
-                {loading && <p>Loading...</p>}
-                {!loading && searchResults.length === 0 && <p>No results found.</p>}
-                <div className="animecontainerColumnsd">
-                    {searchResults.map((anime) => (
-                        <div key={anime.mal_id} className="animeCard">
-                            <img src={anime.images.jpg.image_url} alt={anime.title} />
-                            <h3>{anime.title}</h3>
-                            <p>Score: {anime.score}</p>
-                        </div>
-                    ))}
-                </div>
+    return (
+        <div className="searchResults">
+            <Searchbar />
+            {loading && <p>Loading...</p>}
+            {!loading && searchResults.length === 0 && <p>No results found.</p>}
+            <div className="animeContainerResults">
+                {searchResults.map((anime) => (
+                    <div key={anime.mal_id}>
+                        <h3>{anime.title}</h3>
+                        <img className='animeImg' 
+                            src={anime.images.jpg.image_url} 
+                            alt={anime.title} 
+                        />
+                        <p>{anime.score}</p>
+                    </div>
+                ))}
             </div>
-        );
+        </div>
+    );
 }

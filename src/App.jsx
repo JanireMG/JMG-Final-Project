@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import Home from './Components/Pages/Home';
 import Icons  from './Helpers/icons';
 
 function App() {
@@ -10,11 +9,10 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Home />
+    <div> 
       <Outlet />
     </div>
-  )
+  );
 }
 
 export default App;
