@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import AnimeList from '../ReutilizableFx/AnimeList';
+
 export default class HomeContainer extends Component {
     constructor(props) {
         super(props);
@@ -54,51 +56,13 @@ export default class HomeContainer extends Component {
             <div className='homeContainer'>
                 <div className='animeColumns'>
                     <div className= 'leftSide'>
-                        <div className='topAnimes'>
-                            {this.topAnimes}
-                            <h1>Top Animes</h1>
-                            {isLoading ? (
-                                <p>Loading...</p>
-                            ) : (
-                                <div className='animeContainer'>
-                                    {topAnimes.map((animeItem) => (
-                                        <div className='animeContainerColumns' key={animeItem.mal_id}>
-                                            {animeItem.title}<br></br>
-                                                <img className='animeImg'
-                                                    src={animeItem.images.jpg.image_url}
-                                                    alt={animeItem.title}
-                                                /><br></br>
-                                            {animeItem.score}
-                                        </div>
-                                    ))}
-                                </div>
-                                )}
-                        </div>
+                        <AnimeList title="Top Animes" animes={topAnimes} loading={isLoading} />
                     </div>
-                    <div className='rightSide'> 
-                        <div className='lastAnimes'>{this.lastAnimes}
-                            <h1>Last Animes</h1>
-                            {isLoading ? (
-                                <p>Loading...</p>
-                            ) : (
-                                <div className='animeContainer'>
-                                    {lastAnimes.map((animeItem) => (
-                                        <div className='animeContainerColumns' key={animeItem.mal_id}>
-                                            {animeItem.title}<br></br>
-                                                <img className='animeImg'
-                                                    src={animeItem.images.jpg.image_url}
-                                                    alt={animeItem.title}
-                                                /><br></br>
-                                            {animeItem.score}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                    <div className='rightSide'>
+                        <AnimeList title="Last Animes" animes={lastAnimes} loading={isLoading} />
                     </div>
-                </div>
+                </div>  
             </div>
-
-        )
+        );
     }
 }
