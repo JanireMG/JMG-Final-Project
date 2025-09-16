@@ -21,11 +21,9 @@ export default function Searchbar() {
                 placeholder ="Search for an anime..."
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
-            <button className="btn">
-                <a onClick={handleSearch}>
-                    Search
-                    <FontAwesomeIcon className="searchIcon" icon="magnifying-glass"  />
-                </a>
+            <button className="btn" onClick={handleSearch}>
+                Search
+                <FontAwesomeIcon className="searchIcon" icon="magnifying-glass"  />
             </button>
         </div>
     );

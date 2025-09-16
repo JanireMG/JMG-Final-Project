@@ -4,6 +4,7 @@ import axios from "axios";
 import AnimeList from '../ReutilizableFx/AnimeList';
 import Searchbar from "./Searchbar";
 import { withLocation } from "../ReutilizableFx/withLocation";
+import TopBanner from "../ReutilizableFx/TopBanner";
 
 
 class SearchbarContent extends Component {
@@ -13,6 +14,9 @@ class SearchbarContent extends Component {
             searchResults: [],
             isLoading: true,
         };
+
+        this.debounceTimeout = null;
+        this.abortController = null;
     }
     
     handleFetchSearchResults = (searchQuery) => {
@@ -21,34 +25,48 @@ class SearchbarContent extends Component {
             return;
         }
 
-        this.setState({ isLoading: true });
+        if (this.debounceTimeout) {
+            clearTimeout(this.debounceTimeout);
+        }
 
-        axios
-            .get(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(searchQuery)}`)
-            .then((response) => {
-                this.setState({ 
-                    searchResults: response.data.data, 
-                    isLoading: false, 
-                });
-            })
-            .catch((error) => {
-                console.error('Error fetching search results:', error);
-                this.setState({ isLoading: false });
+        this.debounceTimeout = setTimeout(() =>{
+            if (this.abortController){
+                this.abortController.abort();
             }
-        );
+
+            this.abortController = new AbortController(); 
+
+            this.setState({ isLoading: true });
+
+            axios
+                .get(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(searchQuery)}`,
+                    { signal: this.abortController.signal }
+                )
+                .then((response) => {
+                    this.setState({ 
+                        searchResults: response.data.data, 
+                        isLoading: false, 
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error fetching search results:', error);
+                    this.setState({ isLoading: false });
+                }
+            );
+        }, 500);
     };
 
     componentDidMount() {
         const params = new URLSearchParams(this.props.location.search);
-        const searchQuery = params.get('q') || '';
+        const searchQuery = params.get('query') || '';
         this.handleFetchSearchResults(searchQuery);
     }
 
     componentDidUpdate(prevProps, prevState) {
         const params = new URLSearchParams(window.location.search);
-        const currentQuery = params.get('q') || '';
+        const currentQuery = params.get('query') || '';
         const prevParams = new URLSearchParams(prevProps.location?.search || '');
-        const prevQuery = prevParams.get('q') || '';
+        const prevQuery = prevParams.get('query') || '';
 
         if (currentQuery && currentQuery !== prevQuery) {
             this.handleFetchSearchResults(currentQuery);
@@ -60,6 +78,7 @@ class SearchbarContent extends Component {
 
         return (
             <div className="searchResults">
+                <TopBanner />
                 <Searchbar />
                 <AnimeList 
                     animes={this.state.searchResults}

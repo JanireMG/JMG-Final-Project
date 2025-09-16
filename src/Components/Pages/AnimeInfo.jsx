@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+import TopBanner from "../ReutilizableFx/TopBanner";
+
+
 
 export default class AnimeInfo extends Component {
     constructor(props) {
@@ -13,7 +16,7 @@ export default class AnimeInfo extends Component {
 
     handleFetchAnimeDetails = (animeId) => {
         axios
-            .get(`https://api.jikan.moe/v4/anime/${animeId}/moreinfo`)
+            .get(`https://api.jikan.moe/v4/anime/${animeId}`)
             .then((response) => {
                 this.setState({ animeDetails: response.data.data, isLoading: false });
             })
@@ -34,6 +37,7 @@ export default class AnimeInfo extends Component {
 
     render() {
         const { animeDetails, isLoading } = this.state;
+
         if (isLoading) {
             return <p>Loading...</p>;
         }
@@ -44,18 +48,12 @@ export default class AnimeInfo extends Component {
 
         return (
             <div className="animeDetails">
+                <TopBanner onBackClick={() => window.history.back()} title={animeDetails.title} />
                 <h1>{animeDetails.title}</h1>
-                <img className="animeImg" 
-                    src={animeDetails.images?.jpg?.image_url} 
-                    alt={animeDetails.title} 
-                />
-                <p>{animeDetails.synopsis}</p>  
+                <img src={animeDetails.images.jpg.image_url} alt={animeDetails.title} />
+                <p>{animeDetails.synopsis}</p>
                 <p>Episodes: {animeDetails.episodes}</p>
                 <p>Score: {animeDetails.score}</p>
-                <p>Rating: {animeDetails.rating}</p>
-                <p>Duration: {animeDetails.duration}</p>
-                <p>Year: {animeDetails.year}</p>
-                <p>Type: {animeDetails.type}</p>
             </div>
         );
     }   
