@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import TopBanner from "../ReutilizableFx/TopBanner";
-
+import NoDetails from "../ReutilizableFx/NoDetails";
 
 
 export default class AnimeInfo extends Component {
@@ -43,17 +43,30 @@ export default class AnimeInfo extends Component {
         }
 
         if (!animeDetails) {
-            return <p>No details available.</p>;
+            return <NoDetails/>;
         }
 
         return (
-            <div className="animeDetails">
-                <TopBanner onBackClick={() => window.history.back()} title={animeDetails.title} />
-                <h1>{animeDetails.title}</h1>
-                <img src={animeDetails.images.jpg.image_url} alt={animeDetails.title} />
-                <p>{animeDetails.synopsis}</p>
-                <p>Episodes: {animeDetails.episodes}</p>
-                <p>Score: {animeDetails.score}</p>
+            <div>
+                <TopBanner />
+                <div className="animeDetailsContainer">
+                    <div className="animeDetailsTitle">
+                        <h1>{animeDetails.title}</h1>
+                    </div>
+
+                    <div className="animeDetailsImgSinopsis">
+                        <img className="detailImg" 
+                            src={animeDetails.images.jpg.image_url} 
+                            alt={animeDetails.title} 
+                        />
+                        <p className="detailSinopsis">{animeDetails.synopsis}</p>
+                    </div>
+
+                    <div className="animeDetailsEpisodesScore">
+                        <p>Episodes: {animeDetails.episodes}</p>
+                        <p>Score: {animeDetails.score}</p>
+                    </div>
+                </div>
             </div>
         );
     }   

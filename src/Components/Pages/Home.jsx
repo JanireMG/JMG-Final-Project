@@ -6,7 +6,7 @@ import TopBanner from "../ReutilizableFx/TopBanner";
 export default function Home() {
     return (
         <div>
-            <TopBanner />
+            <TopBanner showButtons= {false}/>
             <Searchbar />
             <HomeContainer />
         </div>

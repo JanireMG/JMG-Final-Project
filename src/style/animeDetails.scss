@@ -1,0 +1,41 @@
+@use 'variables';
+
+.animeDetailsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.animeDetailsTitle{
+    display: flex;
+    justify-content: center;
+    color: variables.$light-purple;
+}
+
+.animeDetailsImgSinopsis{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+
+    .detailImg{
+        border: 3px variables.$light-purple solid;
+        padding: 10px
+    }
+
+    .detailSinopsis{
+        background-color: rgba(variables.$light-purple, 0.35);
+        padding: 20px 30px;
+        border-radius: 10px;
+    }
+}
+
+.animeDetailsEpisodesScore{
+    display: flex;
+    justify-content: center;
+    gap: 20px
+
+}

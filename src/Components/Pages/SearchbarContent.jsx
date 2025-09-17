@@ -5,7 +5,7 @@ import AnimeList from '../ReutilizableFx/AnimeList';
 import Searchbar from "./Searchbar";
 import { withLocation } from "../ReutilizableFx/withLocation";
 import TopBanner from "../ReutilizableFx/TopBanner";
-
+import NoDetails from "../ReutilizableFx/NoDetails";
 
 class SearchbarContent extends Component {
     constructor(props) {
@@ -75,6 +75,14 @@ class SearchbarContent extends Component {
 
     render() {
         const { searchResults, isLoading } = this.state;
+
+        if (isLoading) {
+            return <p>Loading...</p>;
+        }
+        
+        if (!searchResults || searchResults.lenght=== 0) {
+            return <p>Loading...</p>;
+        }    
 
         return (
             <div className="searchResults">

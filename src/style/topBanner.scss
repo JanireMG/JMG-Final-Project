@@ -12,22 +12,6 @@
         flex-direction:column;
         align-items: center;
         gap: 5px;
- 
-        .backBtn, .homeBtn {
-            background-color: variables.$dark-purple;
-            color: variables.$white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 16px;
-            cursor: pointer;
-
-            &:hover{
-                background-color: variables.$light-purple;
-                transition: 0.5s ease-in-out;
-            }
-        
-        }
     }
 
     .centerCol {

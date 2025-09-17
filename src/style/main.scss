@@ -1,7 +1,9 @@
 @use "./variables";
+@use "./btn";
 @use "./animeContainer";
 @use "./background";
-@use "./headersStyle";
-@use "searchbar";
-@use "searchbarResults";
-@use "topBanner";
+@use "./searchbar";
+@use "./searchbarResults";
+@use "./topBanner";
+@use "./animeDetails";
+@use "./noDetails";
