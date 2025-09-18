@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import AnimeList from '../ReutilizableFx/AnimeList';
-import Searchbar from "./Searchbar";
-import { withLocation } from "../ReutilizableFx/withLocation";
-import TopBanner from "../ReutilizableFx/TopBanner";
-import NoDetails from "../ReutilizableFx/NoDetails";
+import Searchbar from "../ReutilizableFx/Searchbar";
+import { withLocation } from '../ReutilizableFx/withLocation';
+import TopBanner from '../ReutilizableFx/TopBanner';
+
 
 class SearchbarContent extends Component {
     constructor(props) {

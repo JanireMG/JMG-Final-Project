@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import Btn from "./Btn";
+import Login from "../Auth/login";
 
 export default function TopBanner({ title, showButtons = true }) {
     const navigate= useNavigate();
@@ -21,7 +22,7 @@ export default function TopBanner({ title, showButtons = true }) {
             </div>
 
             <div className="rightCol">
-                LOGIN
+                <Login/>
             </div>
         </div>
     );
