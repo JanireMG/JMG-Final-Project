@@ -22,7 +22,12 @@ export default function TopBanner({ title, showButtons = true }) {
             </div>
 
             <div className="rightCol">
-                <Login/>
+                <button onClick={() => navigate("/login")}>
+                    Log In
+                </button>
+                <button onClick={() => navigate("/register")}>
+                    Sign In
+                </button>
             </div>
         </div>
     );

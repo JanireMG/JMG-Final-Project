@@ -14,6 +14,11 @@ const db= mysql.createConnection({
     database: "final_project_db"
 });
 
+db.connect(err => {
+    if (err) console.error("Error de conexión:", err);
+    else console.log("Conexión a MySQL OK");
+});
+
 app.get("/", (req,res)=> {
     res.send("Server OK");
 });
@@ -22,7 +27,9 @@ app.post("/api/register", async (req,res)=> {
     const { firstname, username, email, password } = req.body;
 
     if(!firstname || !username || !email || !password ) {
-        return res.status(400).json({error: "Faltan campos por rellenar"});
+        return res
+            .status(400)
+            .json({success: false, error: "Faltan campos por rellenar"});
     }
 
     try{
@@ -36,13 +43,15 @@ app.post("/api/register", async (req,res)=> {
         db.query(sql, [firstname, username, email, hashedPassword], (err, result) => {
             if(err) {
                 console.error("Error en mysql", err);
-                return res.status(500).json({error: "Error al crear el usuario"});
+                return res
+                    .status(500)
+                    .json({success: false, error: "Error al crear el usuario"});
             }
-            res.json({ message: "Usuario registrado correctamente", userId: result.insertId });
+            res.json({ success: true, userId: result.insertId });
         });
     } catch (error) {
         console.error("Error interno:", error);
-        res.status(500).json({error: "Error interno"});
+        res.status(500).json({success: false, error: "Error interno"});
     }
 });
 

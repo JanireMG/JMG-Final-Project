@@ -18,7 +18,8 @@ const router = createBrowserRouter([
       {path: '', element: <Home /> },
       {path: 'search', element: <SearchbarContent />},
       {path: 'anime-info', element: <AnimeInfo /> },
-      {path: 'login', element: <Login /> }
+      {path: 'login', element: <Login />},
+      {path: 'register', element: <Login /> },
     ],
   },
 ])

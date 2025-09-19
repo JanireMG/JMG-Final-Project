@@ -3,11 +3,14 @@ import axios from "axios";
 export const loginUser = async (username, password) => {
   try {
     const response = await axios.post(
-        'http://localhost:5000/login', 
-        { 
-            username, 
-            password 
-        }
+      'http://localhost:5000/api/login', 
+      { 
+        username, 
+        password 
+      },
+      {
+        headers: { "Content-Type": "application/json" }
+      }
     );
     return response.data;
   } catch (error) {

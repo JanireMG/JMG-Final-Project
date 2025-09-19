@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '../ReutilizableFx/Login/LoginUser';
 import { registerUser } from '../ReutilizableFx/Login/RegisterUser';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Btn from '../ReutilizableFx/Btn';
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
 
@@ -15,27 +16,25 @@ export default class Login extends Component {
             email: "" ,
             password: "",
             errorText: "",
-            activeForm: "login"
         };
     }
 
-     handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-    }
 
-    handleSwitchForm = (form) => {
-        this.setState({ activeForm:form, errorText:""});
+    handleChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     handleLogin = async (e) => {
         e.preventDefault();
         const { username, password } = this.state;
+        const { navigate } = this.props
 
         const result= await loginUser(username,password);
 
-        if(result.sucess) {
+        if(result.success) {
             this.setState({ errorText: ""});
             console.log("Login con exito", result.user)
+            navigate("/");
         }else {
             this.setState({ errorText: result.error });
         }
@@ -44,12 +43,14 @@ export default class Login extends Component {
     handleRegister = async (e) => {
         e.preventDefault();
         const { firstname, username, email, password } = this.state;
+        const { navigate } = this.props
 
         const result= await registerUser(firstname, username, email, password);
 
-        if(result.sucess) {
+        if(result.success) {
             this.setState({ errorText: ""});
             console.log("Usuario registrado", result.userId)
+            navigate("/");
         }else {
             this.setState({ errorText: result.error });    
         }
@@ -57,23 +58,18 @@ export default class Login extends Component {
     }
     
     render() {
-        const { firstname, username, email, password, errorText, activeForm } = this.state;
+        const { firstname, username, email, password, errorText} = this.state;
+        const { location } = this.props;
+        const activeForm = location.pathname === "/register" ? "register" : "login";
 
         return(
             <div>
-                <div>
-                    <button onClick={() => this.handleSwitchForm("login")}>
-                        Login
-                    </button>
-
-                    <button onClick={() => this.handleSwitchForm("register")}>
-                        Register
-                    </button>
-                </div>
-
+                <Btn />
                 {activeForm === "login" ? (
-                    <form onSubmit={this.handleLogin}>
-                        <input
+                    <form className='loginContainer'
+                        onSubmit={this.handleLogin}>
+                        <h2 className='loginTitle'>LOG IN</h2>
+                        <input 
                             type='text'
                             name='username'
                             value={username}
@@ -89,11 +85,16 @@ export default class Login extends Component {
                             onChange={this.handleChange}
                         />
                         {errorText && <p style={{ color: 'red' }}>{errorText}</p>}
-                        <button type="submit">Iniciar sesión</button>
+                        <button className='loginBtn'
+                            type="submit">
+                                Log In
+                            </button>
                     </form>
                 ) : (
-                    <form onSubmit={this.handleRegister}>
-                        <input
+                    <form className='registerContainer'
+                        onSubmit={this.handleRegister}>
+                        <h2 className='registerTitle'>SIGN IN</h2>
+                        <input 
                             type='text'
                             name='firstname'
                             value={firstname}
@@ -124,10 +125,19 @@ export default class Login extends Component {
                             placeholder='Introduce tu contraseña'
                             onChange={this.handleChange}
                         />
-                        <button type="submit">Registrarse</button>
+                        <button className='registerBtn'
+                            type="submit">
+                                Sign In
+                        </button>
                     </form>
                 )}
             </div>
         );
     }
+}
+
+export default function LoginWrapper() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    return <Login location={location} navigate={navigate} />;
 }
