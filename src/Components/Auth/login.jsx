@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 
 import { loginUser } from '../ReutilizableFx/Login/LoginUser';
 import { registerUser } from '../ReutilizableFx/Login/RegisterUser';
@@ -19,6 +21,23 @@ class Login extends Component {
         };
     }
 
+    componentDidMount() {
+        axios
+            .get(
+                "http://localhost:5000/api/session", 
+                { withCredentials: true }
+            )
+            .then(res => {
+                if(res.data.loggedIn) {
+                    this.props.setLoggedIn(true);
+                    
+                    this.setState({ 
+                        username: res.data.user.username
+                    });
+                }
+            })
+            .catch(err => console.error("Error en la verificación de sesión", err));
+    }
 
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -27,13 +46,17 @@ class Login extends Component {
     handleLogin = async (e) => {
         e.preventDefault();
         const { username, password } = this.state;
-        const { navigate } = this.props
+        const { navigate, setLoggedIn } = this.props
 
         const result= await loginUser(username,password);
 
         if(result.success) {
-            this.setState({ errorText: ""});
-            console.log("Login con exito", result.user)
+            setLoggedIn(true);
+
+            this.setState({ 
+                errorText: "",
+                username: result.user.username
+            });
             navigate("/");
         }else {
             this.setState({ errorText: result.error });
@@ -43,13 +66,17 @@ class Login extends Component {
     handleRegister = async (e) => {
         e.preventDefault();
         const { firstname, username, email, password } = this.state;
-        const { navigate } = this.props
+        const { navigate, setLoggedIn } = this.props
 
         const result= await registerUser(firstname, username, email, password);
 
         if(result.success) {
-            this.setState({ errorText: ""});
-            console.log("Usuario registrado", result.userId)
+            setLoggedIn(true);
+
+            this.setState({ 
+                errorText: "",
+                username: username
+            });
             navigate("/");
         }else {
             this.setState({ errorText: result.error });    
@@ -59,13 +86,18 @@ class Login extends Component {
     
     render() {
         const { firstname, username, email, password, errorText} = this.state;
-        const { location } = this.props;
+        const { location, loggedIn } = this.props;
         const activeForm = location.pathname === "/register" ? "register" : "login";
 
         return(
             <div>
-                <Btn />
-                {activeForm === "login" ? (
+                {loggedIn ? (
+                    <FontAwesomeIcon icon="user"/>
+                ) : (
+                    <Btn />
+                )}
+
+                {!loggedIn && activeForm === "login" && (
                     <form className='loginContainer'
                         onSubmit={this.handleLogin}>
                         <h2 className='loginTitle'>LOG IN</h2>
@@ -84,13 +116,15 @@ class Login extends Component {
                             placeholder='Introduce tu contraseña'
                             onChange={this.handleChange}
                         />
-                        {errorText && <p style={{ color: 'red' }}>{errorText}</p>}
+                        {this.state.errorText && <p style={{ color: 'white' }}>{errorText}</p>}
                         <button className='loginBtn'
                             type="submit">
                                 Log In
                             </button>
                     </form>
-                ) : (
+                )}
+                
+                {!loggedIn && activeForm === "register" && (
                     <form className='registerContainer'
                         onSubmit={this.handleRegister}>
                         <h2 className='registerTitle'>SIGN IN</h2>
@@ -139,5 +173,7 @@ class Login extends Component {
 export default function LoginWrapper() {
     const location = useLocation();
     const navigate = useNavigate();
-    return <Login location={location} navigate={navigate} />;
+    const { loggedIn, setLoggedIn } = useOutletContext();
+
+    return <Login location={location} navigate={navigate} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />;
 }
