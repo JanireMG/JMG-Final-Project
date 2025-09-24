@@ -10,12 +10,18 @@ function App() {
   useEffect(() => {
     Icons();
 
-    axios.get(
-      "http://localhost:5000/api/session", 
-      { withCredentials: true }
-    )
-      .then(res => setLoggedIn(res.data.loggedIn))
-      .catch(err => console.error("Error en sesión:", err));
+    axios
+      .get(
+        "http://localhost:5000/api/session", 
+        { withCredentials: true }
+      )
+      .then(res => {
+        if(res.data.loggedIn){
+          setLoggedIn(true);
+        }
+      }).catch(
+        err => console.error("Error en sesión:", err)
+      );
   }, []);
 
   return (

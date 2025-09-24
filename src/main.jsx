@@ -9,6 +9,7 @@ import AnimeInfo from './Components/Pages/AnimeInfo';
 
 import './style/main.scss';
 import Login from './Components/Auth/login.jsx';
+import UserPanel from './Components/Pages/UserPanel.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       {path: 'anime-info', element: <AnimeInfo /> },
       {path: 'login', element: <Login />},
       {path: 'register', element: <Login /> },
+      {path: 'user-panel', element: <UserPanel /> },
     ],
   },
 ])

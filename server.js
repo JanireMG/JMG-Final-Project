@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: [ "http://localhost:5173", "http://127.0.0.1:5173" ],
     credentials: true
 }));
 
@@ -22,7 +22,7 @@ app.use(session({
     cookie: {
         secure: false,
         httpOnly: true,
-        maxAge: 1000 * 60 *60
+        maxAge: 1000 * 60 * 60
     }
 }));
 
@@ -44,7 +44,10 @@ app.get("/", (req,res)=> {
 
 app.get("/api/session", (req, res) => {
     if (req.session.user) {
-        res.json({ loggedIn: true, user: req.session.user });
+        res.json({ 
+            loggedIn: true, 
+            user: req.session.user }
+        );
     }else {
         res.json({loggedIn: false});
     }
@@ -56,7 +59,10 @@ app.post("/api/login", (req,res) => {
     if (!username || !password) {
         return res
             .status(400)
-            .json({success: false, error: "Usuario o contrasña incorrecta"});
+            .json({
+                success: false, 
+                error: "Usuario o contrasña incorrecta"}
+            );
     }
 
     const sql= `
@@ -67,13 +73,19 @@ app.post("/api/login", (req,res) => {
             console.error("Error en DB:" , err);
             return res
                 .status(500)
-                .json({success: false, error: "Error en la base de datos"});
+                .json({
+                    success: false, 
+                    error: "Error en la base de datos"}
+                );
         }
 
         if (results.length === 0) {
             return res
                 .status(401)
-                .json({success: false, error: "Usuario no encontrado"});
+                .json({
+                    success: false, 
+                    error: "Usuario no encontrado"}
+                );
         }
 
         const user = results[0];
@@ -101,9 +113,11 @@ app.post("/api/login", (req,res) => {
             });
         } catch (compareErr) {
             console.error("Error en la comparacion de contraseña", compareErr);
-            res
-                .status (500)
-                .json ({ success: false, error: "Error interno en el servidor" });
+            res.status (500)
+                .json ({ 
+                    success: false, 
+                    error: "Error interno en el servidor" }
+                );
         }
     })
     
@@ -140,6 +154,21 @@ app.post("/api/register", async (req,res)=> {
         res.status(500).json({success: false, error: "Error interno"});
     }
 });
+
+app.post("/api/logout", (req,res) => {
+    if (req.session.user) {
+        req.session.destroy(err => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({success: false, error: "Error al cerrar sesión"})
+            }
+            res.clearCookie("connect.sid")  //limpiar cookies
+            res.json({ success: true });
+        });
+    }else {
+        res.status(400).json({ success: false, error: "Actualmente no hay sesión activa"})
+    }
+})
 
 app.listen(5000, ()=> {
     console.log("Server en marcha");

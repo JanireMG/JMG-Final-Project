@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom';
 
 import { loginUser } from '../ReutilizableFx/Login/LoginUser';
 import { registerUser } from '../ReutilizableFx/Login/RegisterUser';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TopBanner from "../ReutilizableFx/TopBanner";  
 import Btn from '../ReutilizableFx/Btn';
 
 class Login extends Component {
@@ -92,77 +92,102 @@ class Login extends Component {
         return(
             <div>
                 {loggedIn ? (
-                    <FontAwesomeIcon icon="user"/>
+                    <Btn
+                        onUserClick={() => this.props.navigate("/user-panel")}
+                        onLogoutClick={this.props.handleLogout}
+                    />
                 ) : (
-                    <Btn />
+                    !loggedIn && activeForm !== 'login' && activeForm !== "register" && (
+                        <Btn
+                            onLoginClick={() => this.props.navigate("/login")}
+                            onRegisterClick={() => this.props.navigate("/register")}
+                        />
+                    )
                 )}
 
-                {!loggedIn && activeForm === "login" && (
-                    <form className='loginContainer'
+                {!loggedIn && activeForm === 'login' && (
+                    <form 
                         onSubmit={this.handleLogin}>
-                        <h2 className='loginTitle'>LOG IN</h2>
-                        <input 
-                            type='text'
-                            name='username'
-                            value={username}
-                            placeholder='Introduce tu usuario'
-                            onChange={this.handleChange}
-                        />
-
-                        <input
-                            type='password'
-                            name='password'
-                            value={password}
-                            placeholder='Introduce tu contraseña'
-                            onChange={this.handleChange}
-                        />
-                        {this.state.errorText && <p style={{ color: 'white' }}>{errorText}</p>}
-                        <button className='loginBtn'
-                            type="submit">
+                        <h2 className='h2Title'>LOG IN</h2>
+                        <div className='loginContainer'>
+                            <div>
+                                <input className='inputBar' 
+                                    type='text'
+                                    name='username'
+                                    value={username}
+                                    placeholder='Enter your username'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                            
+                            <div>
+                                <input className='inputBar'
+                                    type='password'
+                                    name='password'
+                                    value={password}
+                                    placeholder='Enter your password'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                            {this.state.errorText && <p style={{ color: 'white' }}>{errorText}</p>}
+                            <button className='btn'
+                                type="submit">
                                 Log In
                             </button>
+                        </div>
                     </form>
                 )}
                 
                 {!loggedIn && activeForm === "register" && (
-                    <form className='registerContainer'
+                    <form
                         onSubmit={this.handleRegister}>
-                        <h2 className='registerTitle'>SIGN IN</h2>
-                        <input 
-                            type='text'
-                            name='firstname'
-                            value={firstname}
-                            placeholder='Introduce tu nombre'
-                            onChange={this.handleChange}
-                        />
+                        <h2 className='h2Title'>SIGN IN</h2>
+                        <div className='registerContainer'>
+                            <div>
+                                <input className='inputBar'
+                                    type='text'
+                                    name='firstname'
+                                    value={firstname}
+                                    placeholder='Enter your name'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                        <input
-                            type='text'
-                            name='username'
-                            value={username}
-                            placeholder='Introduce tu usuario'
-                            onChange={this.handleChange}
-                        />
+                            <div>
+                                <input className='inputBar'
+                                    type='text'
+                                    name='username'
+                                    value={username}
+                                    placeholder='Enter your username'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                        <input
-                            type="email"
-                            name="email"
-                            value={email}
-                            placeholder="Introduce tu email"
-                            onChange={this.handleChange}
-                        />
+                            <div>
+                                <input className='inputBar'
+                                    type="email"
+                                    name="email"
+                                    value={email}
+                                    placeholder="Enter your email"
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                        <input
-                            type='password'
-                            name='password'
-                            value={password}
-                            placeholder='Introduce tu contraseña'
-                            onChange={this.handleChange}
-                        />
-                        <button className='registerBtn'
-                            type="submit">
-                                Sign In
-                        </button>
+                            <div>
+                                <input className='inputBar'
+                                    type='password'
+                                    name='password'
+                                    value={password}
+                                    placeholder='Enter yor password'
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                        
+                            <button className='btn'
+                                type="submit">
+                                    Sign In
+                            </button>
+                        </div>
                     </form>
                 )}
             </div>
