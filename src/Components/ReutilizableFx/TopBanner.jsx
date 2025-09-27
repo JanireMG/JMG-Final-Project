@@ -6,7 +6,7 @@ import Logout from "../Auth/logout";
 
 export default function TopBanner({ title = "AniGaua", showButtons = true }) {
     const navigate = useNavigate();
-    const { loggedIn, setLoggedIn } = useOutletContext();
+    const { loggedIn, setLoggedIn, user, setUser } = useOutletContext();
 
     return (
         <div className="topBanner">

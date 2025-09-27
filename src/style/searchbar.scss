@@ -32,6 +32,12 @@
         text-align: center; 
         background-color: transparent;
         color: rgb(variables.$white, 0.75);
+        
+        &::placeholder {
+            color: rgba(variables.$white, 0.5);
+            opacity: 1; 
+        }
+
 
         &:focus{
             outline: none;

@@ -13,11 +13,11 @@ export const loginUser = async (username, password) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error en login:", error);
+    console.error("Login error:", error);
     
     return { 
       success: false, 
-      error: "Error al conectarse al servidor" 
+      error: "User or password error." 
     };
   }
 };

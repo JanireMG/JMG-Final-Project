@@ -5,7 +5,6 @@ import { useOutletContext } from 'react-router-dom';
 
 import { loginUser } from '../ReutilizableFx/Login/LoginUser';
 import { registerUser } from '../ReutilizableFx/Login/RegisterUser';
-import TopBanner from "../ReutilizableFx/TopBanner";  
 import Btn from '../ReutilizableFx/Btn';
 
 class Login extends Component {
@@ -36,7 +35,7 @@ class Login extends Component {
                     });
                 }
             })
-            .catch(err => console.error("Error en la verificación de sesión", err));
+            .catch(err => console.error("Session verification failed", err));
     }
 
     handleChange = (e) => {
@@ -46,12 +45,13 @@ class Login extends Component {
     handleLogin = async (e) => {
         e.preventDefault();
         const { username, password } = this.state;
-        const { navigate, setLoggedIn } = this.props
+        const { navigate, setLoggedIn, setUser} = this.props
 
         const result= await loginUser(username,password);
 
         if(result.success) {
             setLoggedIn(true);
+            setUser(result.user)
 
             this.setState({ 
                 errorText: "",
@@ -66,12 +66,13 @@ class Login extends Component {
     handleRegister = async (e) => {
         e.preventDefault();
         const { firstname, username, email, password } = this.state;
-        const { navigate, setLoggedIn } = this.props
+        const { navigate, setLoggedIn, setUser } = this.props
 
         const result= await registerUser(firstname, username, email, password);
 
         if(result.success) {
             setLoggedIn(true);
+            setUser(result.user)
 
             this.setState({ 
                 errorText: "",
@@ -143,46 +144,50 @@ class Login extends Component {
                         onSubmit={this.handleRegister}>
                         <h2 className='h2Title'>SIGN IN</h2>
                         <div className='registerContainer'>
-                            <div>
-                                <input className='inputBar'
-                                    type='text'
-                                    name='firstname'
-                                    value={firstname}
-                                    placeholder='Enter your name'
-                                    onChange={this.handleChange}
-                                />
+                            <div className='leftContainer'>
+                                <div>
+                                    <input className='inputBar'
+                                        type='text'
+                                        name='firstname'
+                                        value={firstname}
+                                        placeholder='Enter your name'
+                                        onChange={this.handleChange}
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <input className='inputBar'
+                                        type='text'
+                                        name='username'
+                                        value={username}
+                                        placeholder='Enter your username'
+                                        onChange={this.handleChange}
+                                    />
+                                </div>
                             </div>
 
-                            <div>
-                                <input className='inputBar'
-                                    type='text'
-                                    name='username'
-                                    value={username}
-                                    placeholder='Enter your username'
-                                    onChange={this.handleChange}
-                                />
-                            </div>
+                            <div className='rightContainer'>
+                                <div>
+                                    <input className='inputBar'
+                                        type="email"
+                                        name="email"
+                                        value={email}
+                                        placeholder="Enter your email"
+                                        onChange={this.handleChange}
+                                    />
+                                </div>
 
-                            <div>
-                                <input className='inputBar'
-                                    type="email"
-                                    name="email"
-                                    value={email}
-                                    placeholder="Enter your email"
-                                    onChange={this.handleChange}
-                                />
+                                <div>
+                                    <input className='inputBar'
+                                        type='password'
+                                        name='password'
+                                        value={password}
+                                        placeholder='Enter yor password'
+                                        onChange={this.handleChange}
+                                    />
+                                </div>
                             </div>
-
-                            <div>
-                                <input className='inputBar'
-                                    type='password'
-                                    name='password'
-                                    value={password}
-                                    placeholder='Enter yor password'
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                        
+                            {this.state.errorText && <p style={{ color: 'white' }}>{errorText}</p>}
                             <button className='btn'
                                 type="submit">
                                     Sign In
@@ -198,7 +203,14 @@ class Login extends Component {
 export default function LoginWrapper() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { loggedIn, setLoggedIn } = useOutletContext();
+    const { loggedIn, setLoggedIn, user, setUser } = useOutletContext();
 
-    return <Login location={location} navigate={navigate} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />;
+    return <Login 
+        location={location} 
+        navigate={navigate} 
+        loggedIn={loggedIn} 
+        setLoggedIn={setLoggedIn}
+        user={user} 
+        setUser={setUser}
+    />;
 }

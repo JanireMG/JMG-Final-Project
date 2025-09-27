@@ -61,7 +61,7 @@ app.post("/api/login", (req,res) => {
             .status(400)
             .json({
                 success: false, 
-                error: "Usuario o contrasña incorrecta"}
+                error: "User or password error"}
             );
     }
 
@@ -75,7 +75,7 @@ app.post("/api/login", (req,res) => {
                 .status(500)
                 .json({
                     success: false, 
-                    error: "Error en la base de datos"}
+                    error: "DB error"}
                 );
         }
 
@@ -84,7 +84,7 @@ app.post("/api/login", (req,res) => {
                 .status(401)
                 .json({
                     success: false, 
-                    error: "Usuario no encontrado"}
+                    error: "User not found"}
                 );
         }
 
@@ -96,14 +96,14 @@ app.post("/api/login", (req,res) => {
             if (!match) {
                 return res
                     .status(401)
-                    .json ({success: false, error: "Contraseña incorrecta"})
+                    .json ({success: false, error: "Password error"})
             }
 
             req.session.user = { id: user.USER_ID, username: user.USERNAME};
 
             res.json({
                 success: true,
-                message: "Login correcto",
+                message: "Success login",
                 user: {
                     id: user.USER_ID,
                     firstname: user.FIRSTNAME,
@@ -112,11 +112,11 @@ app.post("/api/login", (req,res) => {
                 },
             });
         } catch (compareErr) {
-            console.error("Error en la comparacion de contraseña", compareErr);
+            console.error("Password error", compareErr);
             res.status (500)
                 .json ({ 
                     success: false, 
-                    error: "Error interno en el servidor" }
+                    error: "Internal server error" }
                 );
         }
     })
@@ -129,7 +129,7 @@ app.post("/api/register", async (req,res)=> {
     if(!firstname || !username || !email || !password ) {
         return res
             .status(400)
-            .json({success: false, error: "Faltan campos por rellenar"});
+            .json({success: false, error: "Missing fields to fill in"});
     }
 
     try{
@@ -142,16 +142,32 @@ app.post("/api/register", async (req,res)=> {
 
         db.query(sql, [firstname, username, email, hashedPassword], (err, result) => {
             if(err) {
-                console.error("Error en mysql", err);
+                console.error("MySQL error:", err);
+
+                if(err.code === "ER_DUP_ENTRY") {
+                    if(err.message.includes("USERNAME")) {
+                        return res
+                            .status(400)
+                            .json({success: false, error: "User already in use."});
+                    }
+                    if(err.message.includes("EMAIL")) {
+                        return res
+                            .status(400)
+                            .json({success: false, error: "Email already in use."});
+                    }
+                    return res
+                        .status(400)
+                        .json({success: false, error: "Duplicated value"});
+                }
                 return res
                     .status(500)
-                    .json({success: false, error: "Error al crear el usuario"});
+                    .json({success: false, error: "Error creating user"});
             }
             res.json({ success: true, userId: result.insertId });
         });
     } catch (error) {
-        console.error("Error interno:", error);
-        res.status(500).json({success: false, error: "Error interno"});
+        console.error("Internal error:", error);
+        res.status(500).json({success: false, error: "Internal error"});
     }
 });
 
@@ -160,13 +176,13 @@ app.post("/api/logout", (req,res) => {
         req.session.destroy(err => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({success: false, error: "Error al cerrar sesión"})
+                return res.status(500).json({success: false, error: "Logout error"})
             }
             res.clearCookie("connect.sid")  //limpiar cookies
             res.json({ success: true });
         });
     }else {
-        res.status(400).json({ success: false, error: "Actualmente no hay sesión activa"})
+        res.status(400).json({ success: false, error: "There is currently no active session"})
     }
 })
 

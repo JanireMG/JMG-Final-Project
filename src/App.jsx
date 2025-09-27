@@ -6,6 +6,7 @@ import Icons  from './Helpers/icons';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   
   useEffect(() => {
     Icons();
@@ -18,6 +19,7 @@ function App() {
       .then(res => {
         if(res.data.loggedIn){
           setLoggedIn(true);
+          setUser(res.data.user);
         }
       }).catch(
         err => console.error("Error en sesión:", err)
@@ -26,7 +28,7 @@ function App() {
 
   return (
     <div> 
-      <Outlet context={{ loggedIn, setLoggedIn }}/>
+      <Outlet context={{ loggedIn, setLoggedIn, user, setUser }}/>
     </div>
   );
 }
