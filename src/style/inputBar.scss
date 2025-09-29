@@ -1,0 +1,31 @@
+@use "./variables";
+
+.inputBar{
+    font-size: 20px;
+    border:none;
+    border-bottom: 2px solid variables.$dark-purple;  
+    text-align: center; 
+    background-color: transparent;
+    color: rgb(variables.$white, 0.75);
+
+    &::placeholder {
+        color: rgba(variables.$white, 0.5);
+        opacity: 1; 
+    }
+
+    &:focus {
+        outline: none;
+        border-bottom: 2px solid variables.$light-purple;
+        transition: 0.5s ease-in-out;
+    }
+
+    &:hover{
+        transition: 0.5s ease-in-out;
+        border-bottom: 2px solid variables.$light-purple;  
+    }
+
+    &:-webkit-autofill {
+        -webkit-text-fill-color: rgba(variables.$white, 0.75);
+        transition: background-color 5000s ease-in-out 0s;
+    }
+}

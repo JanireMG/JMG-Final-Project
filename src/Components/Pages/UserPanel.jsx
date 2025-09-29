@@ -1,23 +1,98 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 
 import TopBanner from "../ReutilizableFx/TopBanner";
 
 export default function UserPanel() {
-    const { user } = useOutletContext();
+    const { user, setUser } = useOutletContext();
+    const [username , setUsername] = useState(user?.username || "");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
+
+    if (!user) return <p>Loading user data...</p>;
+
+    const handleUpdate= async (e) => {
+        e.preventDefault();
+        setMessage("");
+        setError("");
+
+        if (!user?.id) {
+            setError("User session not found");
+            return;
+        }
+
+        const payload = {};
+        if (username) payload.username = username;
+        if (password) payload.password = password;
+
+        if (Object.keys(payload).length === 0) {
+            setError("Enter at least one field to update");
+            return;
+        }
+
+        try{
+            const res = await axios.put(
+                `http://localhost:5000/api/user/${user.id}`,
+                payload,
+                { withCredentials: true }
+            );
+
+            if(res.data.success) {
+                setUser((prev) => ({...prev, username}));
+                setMessage(res.data.message);
+            }
+        }catch (err) {
+            if (err.response && err.response.data?.error) {
+                setError(err.response.data.error);
+            } else {
+                setError("Error updating user");
+            }
+        }
+    };
 
     return (
         <div>
             <TopBanner/>
-            <h1>Welcome back {user.username}!</h1>
+            <div className="userPanel">
+                <h1>Welcome back {user.username || "Guest"}!</h1>
+            
+                <div className="userPanelConfig">
+                    <h2>Update your info</h2>
+                    <form onSubmit={handleUpdate}>
+                        <div className="userPanelForm">
+                            <div>
+                                <h3 className="userPanelLabel">Username:</h3>
+                                <input className='inputBar'
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                />
+                            </div>
 
-            <div className="userPanelVideo">
-                <iframe
-                    src="https://www.youtube.com/embed/NUYvbT6vTPs?autoplay=1&mute=1"
-                    title="User Panel Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                ></iframe>
+                            <div>
+                                <h3 className="userPanelLabel">Password:</h3>
+                                <input className='inputBar'
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <button className="btn" type="submit">Save changes</button>
+                    </form>
+                    {message && <p style={{ color: "white" }}>{message}</p>}
+                    {error && <p style={{ color: "red"}}>{error}</p>}
+                </div>
+                <div className="userPanelVideo">
+                    <iframe
+                        src="https://www.youtube.com/embed/NUYvbT6vTPs?autoplay=1&mute=1"
+                        title="User Panel Video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                    ></iframe>
+                </div>
             </div>
         </div>
     )

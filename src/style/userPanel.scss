@@ -1,5 +1,27 @@
 @use "./variables";
 
+.userPanelConfig{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: variables.$dark-purple;
+
+    .userPanelForm{
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 30px;
+        border: 3px variables.$light-purple solid;
+        padding: 10px;
+        margin-bottom: 30px;
+    }
+
+    .userPanelLabel{
+        gap: 20px;
+        color: variables.$dark-purple;
+    }
+}
+
 .userPanelVideo{
     display: flex;
     justify-content: center;

@@ -167,7 +167,9 @@ app.post("/api/register", async (req,res)=> {
         });
     } catch (error) {
         console.error("Internal error:", error);
-        res.status(500).json({success: false, error: "Internal error"});
+        res
+            .status(500)
+            .json({success: false, error: "Internal error"});
     }
 });
 
@@ -176,15 +178,86 @@ app.post("/api/logout", (req,res) => {
         req.session.destroy(err => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({success: false, error: "Logout error"})
+                return res
+                    .status(500)
+                    .json({success: false, error: "Logout error"})
             }
             res.clearCookie("connect.sid")  //limpiar cookies
             res.json({ success: true });
         });
     }else {
-        res.status(400).json({ success: false, error: "There is currently no active session"})
+        res
+            .status(400)
+            .json({ success: false, error: "There is currently no active session"})
     }
 })
+
+app.put("/api/user/:id", async (req, res) => {
+    const { id } = req.params;
+    const { username, password } = req.body;
+
+    if (!username && !password) {
+        return res
+            .status(400)
+            .json({success: false, error: "Enter at least one field to update"})
+    }
+
+     try {
+        const fields = [];
+        const values = [];
+
+        if (username) {
+            fields.push("USERNAME = ?");
+            values.push(username);
+        }
+
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            fields.push("USER_PASSWORD = ?");
+            values.push(hashedPassword);
+        }
+
+        values.push(id);
+
+        const sql = `UPDATE USERS SET ${fields.join(", ")} WHERE USER_ID = ?`;
+
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error("MySQL error:", err);
+
+                if (err.code === "ER_DUP_ENTRY" && err.message.includes("USERNAME")) {
+                    return res.status(400).json({ success: false, error: "Username already in use" });
+                }
+
+                return res.status(500).json({ success: false, error: "DB error" });
+            }
+
+            if (result.affectedRows === 0) {
+                return res
+                    .json({ 
+                        success: true, 
+                        message: "No changes applied. User is already exists." 
+                    });
+            }
+
+            if (username && req.session.user) {
+                req.session.user.username = username;
+            }
+
+            return res.json({
+                success: true,
+                message: "User successfully updated",
+                updatedFields: {
+                    username: username || null,
+                    password: password ? true : false
+                }
+            });
+        });
+    } catch (err) {
+        console.error("Internal server error", err);
+        return res.status(500).json({ success: false, error: "Internal server error" });
+    }
+});
 
 app.listen(5000, ()=> {
     console.log("Server en marcha");
