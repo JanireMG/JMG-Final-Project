@@ -21,7 +21,7 @@ export default function AnimeList({ title, animes, loading}) {
                                 alt={anime.title}
                                 onClick={ ()=> navigate(`/anime-info?id=${anime.mal_id}`)}
                             /><br />
-                            {anime.score}
+                            <div className="scoreText">{anime.score ?? "No score availiable"}</div><br />
                         </div>
                     ))}
                 </div>

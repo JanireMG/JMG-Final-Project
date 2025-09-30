@@ -3,6 +3,7 @@ import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 
 import TopBanner from "../ReutilizableFx/TopBanner";
+import UserPanelCarousel from "../ReutilizableFx/UserPanelCarousel";
 
 export default function UserPanel() {
     const { user, setUser } = useOutletContext();
@@ -56,14 +57,14 @@ export default function UserPanel() {
         <div>
             <TopBanner/>
             <div className="userPanel">
-                <h1>Welcome back {user.username || "Guest"}!</h1>
+                <h1 className="userPanelTitle">Welcome back {user.username || "Guest"}!</h1>
             
                 <div className="userPanelConfig">
                     <h2>Update your info</h2>
                     <form onSubmit={handleUpdate}>
                         <div className="userPanelForm">
                             <div>
-                                <h3 className="userPanelLabel">Username:</h3>
+                                <h3 className="userPanelLabel">Username</h3>
                                 <input className='inputBar'
                                     type="text"
                                     value={username}
@@ -72,7 +73,7 @@ export default function UserPanel() {
                             </div>
 
                             <div>
-                                <h3 className="userPanelLabel">Password:</h3>
+                                <h3 className="userPanelLabel">Password</h3>
                                 <input className='inputBar'
                                     type="password"
                                     value={password}
@@ -86,12 +87,7 @@ export default function UserPanel() {
                     {error && <p style={{ color: "red"}}>{error}</p>}
                 </div>
                 <div className="userPanelVideo">
-                    <iframe
-                        src="https://www.youtube.com/embed/NUYvbT6vTPs?autoplay=1&mute=1"
-                        title="User Panel Video"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                    ></iframe>
+                    <UserPanelCarousel />
                 </div>
             </div>
         </div>
