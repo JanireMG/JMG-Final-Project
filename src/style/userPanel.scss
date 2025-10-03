@@ -3,9 +3,9 @@
 .userPanelTitle{
     color: variables.$light-purple;
     font-size: 35px;
+    margin-left: 20px;
 
 }
-
 
 .userPanelConfig{
     display: flex;
@@ -15,6 +15,11 @@
     text-align: center;
     align-items: center;
     margin-bottom: 30px;
+    border-bottom: 3px  rgba(variables.$dark-purple, 0.7) solid;
+    padding-bottom: 20px;
+    width: fit-content; 
+    margin: 10px auto 30px; 
+
 
     .userPanelForm{
         display: flex;

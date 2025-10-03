@@ -57,7 +57,9 @@ export default function UserPanel() {
         <div>
             <TopBanner/>
             <div className="userPanel">
-                <h1 className="userPanelTitle">Welcome back {user.username || "Guest"}!</h1>
+                <h1 className="userPanelTitle">
+                    Welcome back {user.username || "Guest"}!          
+                </h1>
             
                 <div className="userPanelConfig">
                     <h2>Update your info</h2>

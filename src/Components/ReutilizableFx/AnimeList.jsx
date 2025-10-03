@@ -14,13 +14,13 @@ export default function AnimeList({ title, animes, loading}) {
                 <div className="animeContainer">
                     {animes.map((anime)=> (
                         <div className="animeContainerColumns" key={anime.mal_id}>
-                            {anime.title}<br />
+                            {anime.title}
                             <img
                                 className="animeImg"
                                 src={anime.images.jpg.image_url}
                                 alt={anime.title}
                                 onClick={ ()=> navigate(`/anime-info?id=${anime.mal_id}`)}
-                            /><br />
+                            />
                             <div className="scoreText">{anime.score ?? "No score availiable"}</div><br />
                         </div>
                     ))}
