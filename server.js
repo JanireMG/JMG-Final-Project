@@ -4,6 +4,8 @@ import mysql from "mysql2";
 import bcrypt from "bcrypt";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors({
@@ -16,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(session({
-    secret:'asterisco1234',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -26,11 +28,11 @@ app.use(session({
     }
 }));
 
-const db= mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Jan1r3m1997.",
-    database: "final_project_db"
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 db.connect(err => {
