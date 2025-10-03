@@ -43,7 +43,7 @@ export default function Btn({ onBackClick, onHomeClick, onUserClick, onLogoutCli
 
                 {onRegisterClick && (
                     <button className="btn" onClick={() => navigate("/register")}>
-                        Register
+                        Sign In
                     </button>
                 )}
             </div>    
