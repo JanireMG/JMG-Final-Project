@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 db.env
+.env
 .env.local
 .env.*.local
 
