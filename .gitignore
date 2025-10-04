@@ -23,7 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-db.env
 .env
 .env.local
 .env.*.local
