@@ -4,6 +4,7 @@ import { useOutletContext } from "react-router-dom";
 
 import TopBanner from "../ReutilizableFx/TopBanner";
 import UserPanelCarousel from "../ReutilizableFx/UserPanelCarousel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function UserPanel() {
     const { user, setUser } = useOutletContext();
@@ -12,7 +13,7 @@ export default function UserPanel() {
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
 
-    if (!user) return <p>Loading user data...</p>;
+    if (!user) return <FontAwesomeIcon icon="spinner" spin />
 
     const handleUpdate= async (e) => {
         e.preventDefault();

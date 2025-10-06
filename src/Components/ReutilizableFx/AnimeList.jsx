@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 export default function AnimeList({ title, animes, loading}) {
     const navigate = useNavigate();
@@ -9,7 +11,7 @@ export default function AnimeList({ title, animes, loading}) {
         <div className="animeSection">
             <h1>{title}</h1>
             {loading ? (
-                <p>Loading...</p>
+                <FontAwesomeIcon icon="spinner" spin />
             ) : (
                 <div className="animeContainer">
                     {animes.map((anime)=> (

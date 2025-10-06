@@ -5,6 +5,7 @@ import AnimeList from '../ReutilizableFx/AnimeList';
 import Searchbar from "../ReutilizableFx/Searchbar";
 import { withLocation } from '../ReutilizableFx/withLocation';
 import TopBanner from '../ReutilizableFx/TopBanner';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 class SearchbarContent extends Component {
@@ -77,11 +78,11 @@ class SearchbarContent extends Component {
         const { searchResults, isLoading } = this.state;
 
         if (isLoading) {
-            return <p>Loading...</p>;
+            return <FontAwesomeIcon icon="spinner" spin />;
         }
         
         if (!searchResults || searchResults.lenght=== 0) {
-            return <p>Loading...</p>;
+            return <FontAwesomeIcon icon="spinner" spin />;
         }    
 
         return (

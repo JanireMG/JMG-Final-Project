@@ -3,6 +3,7 @@ import axios from "axios";
 
 import TopBanner from "../ReutilizableFx/TopBanner";
 import NoDetails from "../ReutilizableFx/NoDetails";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 export default class AnimeInfo extends Component {
@@ -39,7 +40,7 @@ export default class AnimeInfo extends Component {
         const { animeDetails, isLoading } = this.state;
 
         if (isLoading) {
-            return <p>Loading...</p>;
+            return <FontAwesomeIcon icon="spinner" spin />;
         }
 
         if (!animeDetails) {

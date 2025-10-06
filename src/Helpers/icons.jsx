@@ -3,7 +3,8 @@ import {
     faLeftLong,
     faHouse,
     faUser,
-    faArrowRightFromBracket
+    faArrowRightFromBracket,
+    faSpinner, 
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -13,7 +14,8 @@ const Icons = () => {
         faLeftLong,
         faUser,
         faHouse,
-        faArrowRightFromBracket
+        faArrowRightFromBracket,
+        faSpinner,
     );
 };
 
