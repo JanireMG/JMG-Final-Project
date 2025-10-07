@@ -14,7 +14,7 @@ AniGaua, anime + gaua (noche en euskera), es un buscador de animes.
 10. [Contacto](#contacto)
 
 # Descripción
-## Pagina pricipal/ Home
+## Pagina principal/ Home
 En la página principal podemos encontrar los animes con mejor valoración y los últimos lanzamientos. Estos datos se obtienen desde la **API pública de Jikan**
 
 Tambien tenemos una barra de búsqueda.
@@ -150,7 +150,7 @@ http://localhost:5173/
 - **express-session**➔ Gestión de sesión de usuario.
 - **bcrypt**➔ Encriptación de contraseñas.
   
-# DevTools/DevDependencies
+## DevTools/DevDependencies
 - **ESLint**➔ Revisión de calidad de código y buienas prácticas.
 - **Sass-embeddes**➔ Compilador Sass.
 - **@vitejs/plugin-react**➔ Integra React con Vite.
@@ -193,7 +193,14 @@ http://localhost:5173/
 ```
 
 # Funcionalidades
-## Autenticación (Log in/Sign in)
+- Componentes
+  1. [Autenticación](#autenticación)
+  2. [Páginas](#páginas)
+  3. [Funciones reutilizables](#funciones-reutilizables)
+- Helpers
+  1. [Iconos](#iconos)
+## AUTENTICACIÓN
+## Inicio y registro (login)
 - Ubicación➔ ``src/Components/Auth/login.jsx``
 - Funciones auxliares➔ ``LoginUser.jsx`` y ``RegisterUser.jsx``
 - Backend relacionado➔ Rutas ``/login`` y ``/register`` en ``server.js``
@@ -230,7 +237,7 @@ El componente ``LoginWrapper`` usa los **hooks** ``useLocation``, ``useNavigate`
 
 Esto permite que un **componente de clase** tenga acceso a funciones y contextos que normalemnte solo están disponibles en componentes funcionales.
 
-## Cierre de sesión (Logout)
+## Cierre de sesión (logout)
 - Ubicación➔ ``src/Components/Auth/logout.jsx``
 - Backend relacionado➔ Endpoint ``/api/logout`` en ``server.js``
 
@@ -247,7 +254,8 @@ Utiliza el **hook** ``useNavigate`` de React Router para redirigir al usuario tr
   - Se **redirige** al usuario a la **página principal** ``("/")``
 -En caso de haber un error, se muestra en la consola.
 
-## Detalle de anime 
+## PÁGINAS
+## Detalle de anime (AnimeInfo)
 - Ubicación➔  ``src\Components\Pages\AnimeInfo.jsx``
 - Backend / API➔ Jikan API (endpoint externo)
 
@@ -274,4 +282,112 @@ Recibe los datos desde la API pública de Jikan y esta devuelve información com
 - Estado de carga➔ Se muestran **mensajes informativos** mientras la información es recuperada de la API.
 - Estado vacío➔ Si un anime no tiene detalles disponibles, utiliza el **componente** ``NoDetails``.
 - Estado completo➔ Se **renderiza** toda la **información**, tanto **visual** como **textual** del anime.
+
+## Página principal (Home)
+- Ubicación➔ ``src\Components\Pages\Home.jsx``
+- Backend / API➔ Jikan API.
   
+Este componente es **funcional** y es la página principal de la aplicación. Estructura la vista inicial, mostrando el banner, la barra de búsqueda y los animes.
+
+### Estructura del componente
+El componente devuelve una estructura JSX que está compuesta por 3 componentes hijo:
+- ``TopBanner``
+  - Se renderiza en la parte superior de la página.
+  - Recibe la prop ``showButtons={false}`` que **oculta** los **botones** que normalmente aparecen en el banner. Da una imagen más limpia a la pantalla de inicio.
+- ``Searchbar``
+  - Permite al usuario **hacer búsquedas** de animes desde la página principal.
+  - Integra peticiones hacia la API Jikan, facilitando la interacción con la aplicación.
+- ``HomeContainer``
+  - Muestra una lista de animes con los mejor valorados y los ultimos lanzamientos.
+  - Cada sección recibe datos de la API Jikan mediante llamaads internas.
+
+## Contenedor principal (HomeContainer)
+- Ubicación➔ ``src\Components\Pages\HomeContainer.jsx``
+- Backend / API➔ Jikan API (endpoints para los animes más populares y los últimos lanzamientos).
+
+Este componente, está **basado en clases**. Se encarga de mostrar el listado de animes en la página principal.
+
+Obtiene los datos desde la API Jikan y los organiza en 2 secciones:
+  - Animes más valorados.
+  - Ultimos lanzamientos.
+  
+### Flujo del componente
+- Cuando el componente se **monta** (``componentDidMount``), se establece el estado ``isLoading`` en ``true``, ejecutándose **2 solicitudes asíncronas**:
+  - Una para obtener los **animes mejor valorados**.
+  - El otro para obtener los **últimos lanzamientos**.
+- Cada solicitud actualiza su parte correspondiente del estado (``topAnimes``, ``lastAnimes``) y finalmente ``isLoading`` a ``false`` una vez completada.
+
+## Renderizado
+En el método ``render()``, el componente **desestructura** los valores ``isLoading``, ``topAnimes`` y ``lastAnimes`` del estado.
+
+Después, retorna una estructura JSX organizada en 2 columnas:
+  - Columna izquierda➔ muestra los **animes más valorados** mediante el componente reutilizable ``AnimeList``.
+  - Columna derecha➔ muestra los **últimos lanzamientos**, usando también ``AnimeList``.
+Cada lista recibe como **props** la información del anime y el estado de carga, eso permite que ``AnimeList`` muestre **indicadores de carga** o el **contenido final**, según corresponda.
+
+### Manejo de estados
+- El estado ``isLoading`` controla el indicador de carga general.
+
+## Barra de búsqueda (SerachbarContent)
+- Ubicación➔ ``src\Components\Pages\SearchbarContent.jsx``
+- Backend / API➔ API Jikan
+
+Este componente, está **basado en clases**. Se encarga de **manejar** toda la **funcionalidad de búsqueda** de animes dentro de la aplicación.
+
+Se apoya en la API Jikan para obtener los resultados.
+
+### Dependencias e importaciones
+- **React**➔ para la creación del componente y manejo del estado.
+- **Axios**➔ para realizar las solicitudes HTTP a la API.
+- **Componentes reutilizables**➔ ``AnimeList``, ``SearchBar`` y ``TopBanner``.
+- **withLocation**➔ HOC usado para acceder a la ubicación actual.
+
+### Estado e inicialización
+En el **constructor**, se inicializa el estado con las siguientes propiedades:
+  - ``searchResults``➔ **array** que almacena los resultados de búsqueda.
+  - ``isLoading``➔ **boolean** que indica si hay una búsqueda en progreso.
+
+También define 2 variables de instacia:
+  - ``debounceTimeout``➔ **conrtrola** el **retraso** antes de ejecutar la búsqueda, evitando hacer una solicitud por cada pulsación en el teclado.
+  - ``abortController``➔ permite **cancelar solicitudes** HTTP previas si el usuario realiza una búsqueda nueva antes de terminar la anterior.
+
+### Lógica de búsqueda
+``handleFetchSearchResults(query)`` es la función principal, gestiona el proceso de búsqueda:
+- Si el **campo** de **búsqueda** está **vacío**, **limpia los resultados** y cambia ``isLoading`` a ``false``.
+- Si hay una **búsqueda en curso**, ➔ previo para evitar solicitudes redundantes.
+- **Configura** un **nuevo temporizador** (debounce) que espera a que el usuario pare de escribir antes de realizar la petición.
+- Antes de realizar una nueva solicitud, **cancela** cualquier **petición anterior** usando ``abortController``.
+- Por último, **envía** la **solicitud** a la API Jikan y actualiza el estado con los resultados recibidos.
+
+## Panel de usuario (UserPanel)
+- Ubicación➔ ``src\Components\Pages\UserPanel.jsx``
+- Backend / API➔ Endpoint interno ``PUT /api/users/:id``
+
+Es un componente **funcional** que se encarga de gestionar la **actualización del perfil** de usuario. Permite modificar el nombre de usuariuos y/o la contraseña.
+
+Integra comunicación con el backend mediante **Axios** y muestra mensajes de éxito o error dependiendo del resultado.
+
+### Estado y variables
+Utiliza el **hook** ``useState`` para manejar el estado interno:
+- ``message``➔ Si la actualización es exitosa, muestra un mensaje de confirmación.
+- ``error``➔ Almacena mensajes de error en caso de validaciones incorrectas.
+
+### Flujo de componente
+- **Verificación inicial del usuario**:
+  - Si el objeto ``user`` no está disponible, se muestra un **ícono giratorio** para indicar que la información está cargando.
+- **Función principal** ``handleUpdate``:
+  - Se **ejecuta al enviar el formulario** de actualización.
+  - Limpia los mensajes previos (``message`` y ``error``).
+  - Comprueba si el usuario tienen una **sesión activa** (``user.id``):
+    - Si no existe, muestra un mensaje de error y se detiene la ejecución.
+- **Validación de campos**:
+  - Crea un objeto ``payload`` con los datos a actualizar (``username``, ``password``).
+  - Si el usuario no introduce ningún campo, se muestra un mensaje solicitando completar al menos un campo.
+- **Comunicación con el servidor**:
+  - Envía una solicitud **PUT** al backend (``/api/users/:id``) mediante **Axios**, incluyendo ``withCredentials: true`` para mantener la sesión.
+  - Si es exitosa la operación:
+    - Se actualiza el estado del usuario local (``setUser``).
+    - Se muestra un mensaje de confirmación.
+  - Si ocurre un error durante la solicitud, se captura y se muestra en el bloque ``catch``.
+  
+## 
