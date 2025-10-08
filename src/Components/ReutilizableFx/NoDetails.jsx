@@ -7,8 +7,8 @@ export default function NoDetails(){
 
     return(
         <div className="noDetailContainer">
-            <h2>Ops! No hay detalles para mostrar.</h2>
-            <h3>Prueba con otro anime</h3>
+            <h2>Ops! No details available.</h2>
+            <h3>Try another anime</h3>
             <img 
                 className="noDetailImg" 
                 src="static/NoDetailImg/AnyaLupa.jpg"

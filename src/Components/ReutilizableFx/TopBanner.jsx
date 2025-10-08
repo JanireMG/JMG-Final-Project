@@ -33,7 +33,7 @@ export default function TopBanner({ title = "AniGaua", showButtons = true }) {
                     </>             
                 ) : (
                     <Btn
-                        onLogintClick={() => navigate("/login")}
+                        onLoginClick={() => navigate("/login")}
                         onRegisterClick={() => navigate("/register")}
                     />
                     

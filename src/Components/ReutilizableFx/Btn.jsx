@@ -5,7 +5,7 @@ import Icons from "../../Helpers/icons";
 
 Icons();
 
-export default function Btn({ onBackClick, onHomeClick, onUserClick, onLogoutClick, onLogintClick, onRegisterClick}) {
+export default function Btn({ onBackClick, onHomeClick, onUserClick, onLogoutClick, onLoginClick, onRegisterClick}) {
     const navigate= useNavigate();
     return (
         <div>
@@ -35,7 +35,7 @@ export default function Btn({ onBackClick, onHomeClick, onUserClick, onLogoutCli
                     </button>
                 )}
 
-                {onLogintClick && (
+                {onLoginClick && (
                     <button className="btn" onClick={() => navigate("/login")}>
                         Log In
                     </button>

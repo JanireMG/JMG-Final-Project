@@ -201,9 +201,9 @@ http://localhost:5173/
   1. [Iconos](#iconos)
 ## AUTENTICACIÓN
 ## Inicio y registro (login)
-- Ubicación➔ ``src/Components/Auth/login.jsx``
-- Funciones auxliares➔ ``LoginUser.jsx`` y ``RegisterUser.jsx``
-- Backend relacionado➔ Rutas ``/login`` y ``/register`` en ``server.js``
+- **Ubicación**➔ ``src/Components/Auth/login.jsx``
+- **Funciones auxliares**➔ ``LoginUser.jsx`` y ``RegisterUser.jsx``
+- **Backend relacionado**➔ Rutas ``/login`` y ``/register`` en ``server.js``
   
 Este código define un componente de **inicio de sesion y registro** para la aplicación React, combinando componentes de **clase y funcionales**.
 
@@ -238,8 +238,8 @@ El componente ``LoginWrapper`` usa los **hooks** ``useLocation``, ``useNavigate`
 Esto permite que un **componente de clase** tenga acceso a funciones y contextos que normalemnte solo están disponibles en componentes funcionales.
 
 ## Cierre de sesión (logout)
-- Ubicación➔ ``src/Components/Auth/logout.jsx``
-- Backend relacionado➔ Endpoint ``/api/logout`` en ``server.js``
+- **Ubicación**➔ ``src/Components/Auth/logout.jsx``
+- **Backend relacionado**➔ Endpoint ``/api/logout`` en ``server.js``
 
 Este código define un **componente funcional** llamado ``Logout``, maneja la **funcionalidad de cierre de sesión** de la aplicación.
 
@@ -256,8 +256,8 @@ Utiliza el **hook** ``useNavigate`` de React Router para redirigir al usuario tr
 
 ## PÁGINAS
 ## Detalle de anime (AnimeInfo)
-- Ubicación➔  ``src\Components\Pages\AnimeInfo.jsx``
-- Backend / API➔ Jikan API (endpoint externo)
+- **Ubicación**➔  ``src\Components\Pages\AnimeInfo.jsx``
+- **Backend / API**➔ Jikan API (endpoint externo)
 
 Este componente está basado en clases. Se encarga de **mostrar la información** del anime seleccionado.
 
@@ -270,22 +270,18 @@ Recibe los datos desde la API pública de Jikan y esta devuelve información com
 - Cuando los datos se han cargado correctamente, el componente muestra :
   - En la **parte superior** aparece el componente ``TopBanner``, este actúa como cabecera.
   - El contenido principal está organizado en un contenedor con la clase ``animeDetailContainer``.
-  - El **título** del anime se muestra de **forma## Detalle de anime 
-- Ubicación➔  ``src\Components\Pages\AnimeInfo.jsx``
-- Backend / API➔ Jikan API (endpoint externo)
-
-Este componente etsá basado en clases. Se encarga de **mostrar la información** del anime seleccionado.
-
-Recibe los datos desde la API pública de Jikan y esta devuelve información como el **título**, la **imagen**, la **sinopsis** la **puntuación** y los **episodios**.
-
+  - El **título** del anime se muestra de forma destacada.
+  - La **imagen** (``animeDetails.images.jpg.image_url``) y **sinospsis** (``animeDetails.synopsis``) están colocadas una al lado de la otra.
+  - Por último, se muestran los episodios (``animeDetails.episodes``) y la valoración (``animeDetails.score``).
+  
 ### Manejo de estados
 - Estado de carga➔ Se muestran **mensajes informativos** mientras la información es recuperada de la API.
 - Estado vacío➔ Si un anime no tiene detalles disponibles, utiliza el **componente** ``NoDetails``.
 - Estado completo➔ Se **renderiza** toda la **información**, tanto **visual** como **textual** del anime.
 
 ## Página principal (Home)
-- Ubicación➔ ``src\Components\Pages\Home.jsx``
-- Backend / API➔ Jikan API.
+- **Ubicac**ión➔ ``src\Components\Pages\Home.jsx``
+- **Backend / API**➔ Jikan API.
   
 Este componente es **funcional** y es la página principal de la aplicación. Estructura la vista inicial, mostrando el banner, la barra de búsqueda y los animes.
 
@@ -302,8 +298,8 @@ El componente devuelve una estructura JSX que está compuesta por 3 componentes 
   - Cada sección recibe datos de la API Jikan mediante llamaads internas.
 
 ## Contenedor principal (HomeContainer)
-- Ubicación➔ ``src\Components\Pages\HomeContainer.jsx``
-- Backend / API➔ Jikan API (endpoints para los animes más populares y los últimos lanzamientos).
+- **Ubicación**➔ ``src\Components\Pages\HomeContainer.jsx``
+- **Backend / API**➔ Jikan API (endpoints para los animes más populares y los últimos lanzamientos).
 
 Este componente, está **basado en clases**. Se encarga de mostrar el listado de animes en la página principal.
 
@@ -329,8 +325,8 @@ Cada lista recibe como **props** la información del anime y el estado de carga,
 - El estado ``isLoading`` controla el indicador de carga general.
 
 ## Barra de búsqueda (SerachbarContent)
-- Ubicación➔ ``src\Components\Pages\SearchbarContent.jsx``
-- Backend / API➔ API Jikan
+- **Ubicación**➔ ``src\Components\Pages\SearchbarContent.jsx``
+-**Backend / API**➔ API Jikan
 
 Este componente, está **basado en clases**. Se encarga de **manejar** toda la **funcionalidad de búsqueda** de animes dentro de la aplicación.
 
@@ -360,8 +356,8 @@ También define 2 variables de instacia:
 - Por último, **envía** la **solicitud** a la API Jikan y actualiza el estado con los resultados recibidos.
 
 ## Panel de usuario (UserPanel)
-- Ubicación➔ ``src\Components\Pages\UserPanel.jsx``
-- Backend / API➔ Endpoint interno ``PUT /api/users/:id``
+- **Ubicación**➔ ``src\Components\Pages\UserPanel.jsx``
+- **Backend / API**➔ Endpoint interno ``PUT /api/users/:id``
 
 Es un componente **funcional** que se encarga de gestionar la **actualización del perfil** de usuario. Permite modificar el nombre de usuariuos y/o la contraseña.
 
@@ -390,4 +386,97 @@ Utiliza el **hook** ``useState`` para manejar el estado interno:
     - Se muestra un mensaje de confirmación.
   - Si ocurre un error durante la solicitud, se captura y se muestra en el bloque ``catch``.
   
-## 
+## FUNCIONES REUTILIZABLES
+## Inicio de sesión (LoginUser)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\Login\LoginUser.jsx``
+- **Backend / API**➔ Endpoint interno ``POST /api/login``
+
+``loginUser`` es una **función asíncrona**, se encarga de **gestionar** el **inicio de sesión** del usuario.
+
+Utiliza **Axios** para enviar la **solicitud POST** al backend, enviando las **credenciales** del usuario en formato **JSON**.
+
+## Flujo de la función
+- Recibe como **parámetros**➔ ``username`` y ``password``.
+- Envía una petición **POST** al endpoint ``/api/login`` con:
+  - **Body**➔ los datos del usuario (``{ username, password }``)
+  - **Headers**➔ especifica el tipo de contenido como ``application/json``.
+  - **withCredentials**➔ incluye cookies o tokens de autenticación en la solicitud.
+- Si la **solicitud** es **exitosa**:
+  - Devuelve los **datos de respuesta** del servidor.
+- Si ocurre un **error**:
+  - El error se **registra** en la consola.
+  - Se devuelve un **objeto estándar de error** con mensaje:
+    - "User or password error."
+  
+# Registro de usuario (RegisterUser)
+- **Ubicación**➔ ``src\Components\ReutilizableFx\Login\RegisterUser.jsx``
+- **Backend / API**➔ Endpoint interno ``POST /api/register``
+  
+``registerUser`` es una **función asíncrona**, se encarga de **gestionar** el **registro** de nuevos usuarios.
+
+Utiliza **Axios** para enviar la **solicitud HTTP POST** al servidor, enviando los datos del usuario en formato **JSON**.
+
+## Flujo de la función
+- Recibe como **parámetros**➔ ``firstname``, ``username``. ``email`` y ``password``.
+- Envía una petición **POST** al endpoint ``/api/register`` con:
+  - **Body**➔ los datos del nuevo usuario
+  - **Headers**➔ especifica el tipo de contenido como ``application/json``.
+  - **withCredentials**➔ incluye cookies o tokens de autenticación.
+- Si la **solicitud** es **exitosa**:
+  - Devuelve los **datos de respuesta** del servidor, con el estado de registro y las información del nuevo usuario.
+- Si ocurre un **error**:
+  - El error se **registra** en la consola.
+  - Si el servidor devuelve un **mensaje específico**, se retorna el mensaje junto a ``sucess: false``.
+  - Si **no hay mensaje específico**, se devuelve un mensaje genérico:
+    - "Unexpected error."
+
+## Lista de animes (AnimeList)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\AnimeList.jsx``
+- **Backend / API**➔ Datos recibidos desde la API Jikan.
+
+``AnimeList`` es un **componente funcional**, se encarga de mostrar una lista de animes con su imagen, título y puntuación.
+
+Recibe 3 **props** principales➔ ``title``, ``animes`` y ``loading``.
+
+## Flujo del componente
+- Utiliza el **hook** ``useNavigate`` para redirigir al usuario hacia la página de detalles el anime seleccionado.
+- Durante la renderización:
+  - Si ``loading`` es **true**, se muestra un ícono giratorio para indicar que los datos se están obteniendo.
+  - Cuando la carga finaliza, se recorre el array ``animes`` con ``map()`` y se muestran cada anime en su propia columna.
+  
+## Contenido mostrado
+-El **título** de la sección se muestra en la parte superior.
+- Por cada anime se muestra:
+  - El **nombre** del anime (``anime.title``).
+  - Una imagen (``anime.images.jpg.image_url``).
+  - Al hacer **click sobre la imagen**, el usuario es redirigido a la página de **detalles**.
+  - La puntuación:
+    - Si hay **valoración**➔ se muestra el valor.
+    - Si **no hay valoración**➔ se muestra "No score availiable".
+
+## Botones (Btn)
+- **Ubicación**➔ ``src\Components\ReutilizableFx\Btn.jsx``.
+- **Dependencias**➔ React Router (``useNavigate``).
+  
+``Btn`` es un **componente funcional**, actúa como un grupo de botones reutilizable. Se encarga de manejar la **navegación** y las **acciones de usuario**.
+
+## Flujo del componente
+- Recibe varias funciones como **props**➔ ``onBackClick``, ``onHomeClick``, ``onUserClick``, ``onRegisterClick``, ``onLoginClick`` y ``onLogoutClick``.
+- Usa el **hook** ``useNavigate`` para redirigir al usuario en los botones ``Log In`` y ``Sign In``.
+- Renderiza el contenido en **2 columnas**:
+  - **Izquierda**➔ Botones de navegación **Home** y **Back**.
+  - **Derecha**➔ Botones de usuario **User**, **Logout**, **Log In** y **Sign In**.
+- Cada botón solo se muestra si su prop esta definida.
+  
+## Sin detalles disponibles (NoDetails)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\NoDetails.jsx``
+- **Dependencias**➔ React Router (``useNavigate``).
+
+``NoDetails`` es un componente **funcional**, se encarga demostrart un mensaje informativo cuando no haya detalles disponibles para el anime seleccionado.
+
+## Flujo del componente
+- Utiliza el **hook** ``useNavigate`` para redirigir al usuario.
+- Renderiza un contenedor con la clase ``noDetailContainer`` incluyendo:
+  - Un **encabezado principal** y un **subtítulo** informando de que no hay detalles disponibles.
+  - Una imagen.
+- En la parte inferior incluye un **botón**, reutilizado del componente ``Btn``, para redirigir al usuario a la **página principal** (``"/"``).
