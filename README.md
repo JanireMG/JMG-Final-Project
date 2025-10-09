@@ -1,5 +1,8 @@
 # AniGaua
-AniGaua, anime + gaua (noche en euskera), es un buscador de animes. 
+AniGaua, anime + gaua (noche en euskera). 
+
+Es una aplicación para hacer búsquedas relacionadas con animes. En ella podremos encontrar los animes mejor valorados y los ultimos lanzamientos entre muchos otros animes.
+
 
 ## CONTENIDO
 1. [Descripción](#descripción)
@@ -96,18 +99,20 @@ npm run dev
 
 # Uso
 ## 1. Abrir la app
-### Frontend
-Iniciar el proyecto con:
-```bash
-#bash
-npm run dev
-```
 ### Backend
 Poner en marcha el servidor:
 ```bash
 #bash
 node server.js
 ```
+
+### Frontend
+Iniciar el proyecto con:
+```bash
+#bash
+npm run dev
+```
+
 Abrir el navegador en:
 ```bash
 #navegador
@@ -199,6 +204,7 @@ http://localhost:5173/
   3. [Funciones reutilizables](#funciones-reutilizables)
 - Helpers
   1. [Iconos](#iconos)
+
 ## AUTENTICACIÓN
 ## Inicio y registro (login)
 - **Ubicación**➔ ``src/Components/Auth/login.jsx``
@@ -280,7 +286,7 @@ Recibe los datos desde la API pública de Jikan y esta devuelve información com
 - Estado completo➔ Se **renderiza** toda la **información**, tanto **visual** como **textual** del anime.
 
 ## Página principal (Home)
-- **Ubicac**ión➔ ``src\Components\Pages\Home.jsx``
+- **Ubicación**➔ ``src\Components\Pages\Home.jsx``
 - **Backend / API**➔ Jikan API.
   
 Este componente es **funcional** y es la página principal de la aplicación. Estructura la vista inicial, mostrando el banner, la barra de búsqueda y los animes.
@@ -339,12 +345,12 @@ Se apoya en la API Jikan para obtener los resultados.
 - **withLocation**➔ HOC usado para acceder a la ubicación actual.
 
 ### Estado e inicialización
-En el **constructor**, se inicializa el estado con las siguientes propiedades:
+En el **constructor**, se inicializa el estado con las siguientes props:
   - ``searchResults``➔ **array** que almacena los resultados de búsqueda.
   - ``isLoading``➔ **boolean** que indica si hay una búsqueda en progreso.
 
 También define 2 variables de instacia:
-  - ``debounceTimeout``➔ **conrtrola** el **retraso** antes de ejecutar la búsqueda, evitando hacer una solicitud por cada pulsación en el teclado.
+  - ``debounceTimeout``➔ **controla** el **retraso** antes de ejecutar la búsqueda, evitando hacer una solicitud por cada pulsación en el teclado.
   - ``abortController``➔ permite **cancelar solicitudes** HTTP previas si el usuario realiza una búsqueda nueva antes de terminar la anterior.
 
 ### Lógica de búsqueda
@@ -395,7 +401,7 @@ Utiliza el **hook** ``useState`` para manejar el estado interno:
 
 Utiliza **Axios** para enviar la **solicitud POST** al backend, enviando las **credenciales** del usuario en formato **JSON**.
 
-## Flujo de la función
+### Flujo de la función
 - Recibe como **parámetros**➔ ``username`` y ``password``.
 - Envía una petición **POST** al endpoint ``/api/login`` con:
   - **Body**➔ los datos del usuario (``{ username, password }``)
@@ -408,7 +414,7 @@ Utiliza **Axios** para enviar la **solicitud POST** al backend, enviando las **c
   - Se devuelve un **objeto estándar de error** con mensaje:
     - "User or password error."
   
-# Registro de usuario (RegisterUser)
+## Registro de usuario (RegisterUser)
 - **Ubicación**➔ ``src\Components\ReutilizableFx\Login\RegisterUser.jsx``
 - **Backend / API**➔ Endpoint interno ``POST /api/register``
   
@@ -416,7 +422,7 @@ Utiliza **Axios** para enviar la **solicitud POST** al backend, enviando las **c
 
 Utiliza **Axios** para enviar la **solicitud HTTP POST** al servidor, enviando los datos del usuario en formato **JSON**.
 
-## Flujo de la función
+### Flujo de la función
 - Recibe como **parámetros**➔ ``firstname``, ``username``. ``email`` y ``password``.
 - Envía una petición **POST** al endpoint ``/api/register`` con:
   - **Body**➔ los datos del nuevo usuario
@@ -426,7 +432,7 @@ Utiliza **Axios** para enviar la **solicitud HTTP POST** al servidor, enviando l
   - Devuelve los **datos de respuesta** del servidor, con el estado de registro y las información del nuevo usuario.
 - Si ocurre un **error**:
   - El error se **registra** en la consola.
-  - Si el servidor devuelve un **mensaje específico**, se retorna el mensaje junto a ``sucess: false``.
+  - Si el servidor devuelve un **mensaje específico**, se retorna el mensaje junto a ``success: false``.
   - Si **no hay mensaje específico**, se devuelve un mensaje genérico:
     - "Unexpected error."
 
@@ -438,13 +444,13 @@ Utiliza **Axios** para enviar la **solicitud HTTP POST** al servidor, enviando l
 
 Recibe 3 **props** principales➔ ``title``, ``animes`` y ``loading``.
 
-## Flujo del componente
+### Flujo del componente
 - Utiliza el **hook** ``useNavigate`` para redirigir al usuario hacia la página de detalles el anime seleccionado.
 - Durante la renderización:
   - Si ``loading`` es **true**, se muestra un ícono giratorio para indicar que los datos se están obteniendo.
   - Cuando la carga finaliza, se recorre el array ``animes`` con ``map()`` y se muestran cada anime en su propia columna.
   
-## Contenido mostrado
+### Contenido mostrado
 -El **título** de la sección se muestra en la parte superior.
 - Por cada anime se muestra:
   - El **nombre** del anime (``anime.title``).
@@ -460,7 +466,7 @@ Recibe 3 **props** principales➔ ``title``, ``animes`` y ``loading``.
   
 ``Btn`` es un **componente funcional**, actúa como un grupo de botones reutilizable. Se encarga de manejar la **navegación** y las **acciones de usuario**.
 
-## Flujo del componente
+### Flujo del componente
 - Recibe varias funciones como **props**➔ ``onBackClick``, ``onHomeClick``, ``onUserClick``, ``onRegisterClick``, ``onLoginClick`` y ``onLogoutClick``.
 - Usa el **hook** ``useNavigate`` para redirigir al usuario en los botones ``Log In`` y ``Sign In``.
 - Renderiza el contenido en **2 columnas**:
@@ -472,11 +478,143 @@ Recibe 3 **props** principales➔ ``title``, ``animes`` y ``loading``.
 - **Ubicacion**➔ ``src\Components\ReutilizableFx\NoDetails.jsx``
 - **Dependencias**➔ React Router (``useNavigate``).
 
-``NoDetails`` es un componente **funcional**, se encarga demostrart un mensaje informativo cuando no haya detalles disponibles para el anime seleccionado.
+``NoDetails`` es un componente **funcional**, se encarga de mostrar un mensaje informativo cuando no haya detalles disponibles para el anime seleccionado.
 
-## Flujo del componente
+### Flujo del componente
 - Utiliza el **hook** ``useNavigate`` para redirigir al usuario.
 - Renderiza un contenedor con la clase ``noDetailContainer`` incluyendo:
   - Un **encabezado principal** y un **subtítulo** informando de que no hay detalles disponibles.
   - Una imagen.
 - En la parte inferior incluye un **botón**, reutilizado del componente ``Btn``, para redirigir al usuario a la **página principal** (``"/"``).
+
+## Barra de búsqueda (Searchbar)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\Searchbar.jsx``
+- **Dependencias**➔ React Router (``useNavigate``), React (``useState``).
+
+``Searchbar`` es un componente **funcional**, perimite al usuario buscar títulos de animes.
+
+Utiliza el **hook** ``useState`` para manejar el valor actual del término de búsqueda y el **hook** ``useNavigate`` para **redirigir** a la página de **resultados**.
+
+### Flujo del componente
+- La lógica principal la tiene la **función** ``handleSearch``
+  - Verifica que el campo de búsqueda no esté vacío ni contenga solo espacios.
+  - Si es **válido**, redirige a la ruta ``/search?query=your-search-term``, utilizando ``encodeURIComponent`` para codificar el texto de forma segura en la URL.
+- **JSX renderiza** un contenedor que incluye:
+  - Un **campo de entrada controlado** (input) que esta vinculado al estado ``query``. Este se actualiza según va escribiendo el usuario.
+  - Un **botón** con el texto Search y un icono de una lupa. Al hacer click sobre él, se ejecutra la búsqueda.
+  - ``onKeyDown`` permite ejecutar la búsqueda pulsando la tecla **Enter**.
+
+## Encabezado (TopBanner)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\TopBanner.jsx``
+- **Dependencias**➔ React Router (``useNavigate``, ``useOutletContext``), React.
+
+``TopBanner`` en un componente **funcional**. Actúa como encabezado principal y es reutilizable dentro de la aplicación.
+
+Utiliza el **hook** ``useNavigate`` para realizar la navegación programática y el **hook** ``useOutletContext``para acceder a información global del usuario como ``loggedIn`` y ``setLoggedIn``.
+
+### Flujo del componente
+- El componente recibe **2 props**:
+  - ``title``➔ título que se muestra en el encabezado.
+  - ``showButtons``➔ controla si se muestran los botones de navegación.
+- **JSX renderiza** una estructura con 3 columnas:
+  - **Izquierda**➔ Muestra los botones de **inicio** y **volver atrás**.
+  - **Centro**➔ Muestra el título de la página.
+  - **Derecha**➔  El contenido mostrado depende del estado de sesión del usuario:
+    - Si el usuario **ha iniciado sesión**➔ muestra los botones de **panel de usuari**o y **cerrar sesión**.
+    - Si el usuario **no ha iniciado sesión**➔ muestra los botones de **iniciar sesión** y **registrarse**.
+
+## Carrusel de videos (UserPanelCarousel)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\UserPanelCarousel.jsx``
+- **Dependencias**➔ Swiper (``Swiper``, ``SwiperSlide``), módulos de Swiper **Navigation** y **Pagination**.
+
+``UserPanelcarousel`` es un componente **funcional** que muestra un carrusel de vídeos de Youtube utilizando la librería **Swiper**.
+
+Dentro del componente se define un **array** llamado ``videos`` que contiene varias URLs de vídeos.
+
+### Flujo del componente
+- El componente devuelve un elemento ``Swiper`` que está configurado con los módulos de **navegación** y **paginación**, permitiendo:
+  - Moverse entre vídeos mediante flechas.
+  - Una sola diapositiva visible por vez.
+  - Un bucle infinito de reproducción.
+  - Espaciado de 30 píxeles entre cada vídeo.
+- El contenedor tiene unas **medidas** de:
+  - Ancho del 100%.
+  - Altura fija de 400 píxeles.
+- Dentro del ``Swiper``, se mapea el array ``videos`` para crear un ``SwiperSLide`` por cada URL, donde:
+  - Cada slide contiene un **iframe** que inserta el vídeo correspondiente.
+  - El **iframe** incluye estos atributos:
+    - ``loading="lazy"`` para **carga diferida**.
+    - ``allowFullScreen`` para **reproducción** de **pantalla completa**.
+    - ``allow`` con permisos específicos para mejorar la experiencia del usuario.
+
+## HOC (withLocation)
+- **Ubicacion**➔ ``src\Components\ReutilizableFx\withLocation.jsx``
+- **Dependencias**➔ React Router (``useLocation``).
+
+``withLocation`` es un **HOC** (Higher Order Component), es decir, una **función** que **recibe un componente como argumento** y **devuelve** una **nueva versión** del mismo con **propiedades adicionales**.
+
+En este caso, el **HOC** inyecta la información de la ruta actual como una prop llamada ``location`` al componente que envuelve.
+
+### Flujo del componente
+- Dentro de la función que envuelve al componente, se utiliza el **hook** ``useLocation`` de React Router para obtener el objeto de ubicación actual, que contiene **información** como:
+  - La **URL** actual.
+  - El **pathname**.
+  - Los **parámetros de búsqueda**.
+  - Otros **datos** del **historial de navegación**.
+- Después, el componente original se renderiza con todas sus props originales más una nueva prop➔ ``location``, que incluye los datos de la ruta actual.
+
+## ICONOS (Icons)
+- **Ubicacion**➔ ``src\Helpers\icons.jsxx``
+- **Exportación**➔ ``export default Icons``.
+- **Dependencias**➔ ``@fortawesome/free-solid-svg-icons``, ``@fortawesome/fontawesome-svg-core``
+
+### Flujo del componente
+- Se importan varios iconos, como:
+  - ``faMagnifyingGlass``➔ lupa de búsqueda
+  - ``faLeftLong``➔ flecha de retroceso
+  - ``faHouse``➔ inicio
+  - ``faUser``➔ usuario
+  - ``faArrowRightFromBracket``➔ cerrar sesión
+  - ``faSpinner``➔ indicador de carga
+- Se importa el objeto ``library`` de ``@fortawesome/fontawesome-svg-core``. Esto **permite registrar los iconos globalmente**, evitando importaciones repetidas en cada componente.
+- La **función** ``Icons`` agrega todos los iconos a la biblioteca mediante ``library.add()``.
+``Icons`` se exporta como **exportación por defecto**, permitiendo importarlo facilmente para inicializar la biblioteca de iconos.
+
+# Contribución
+¡Muchas gracias por querer contribuir a **AniGaua**!
+
+Puedes contribuir de diversas maneras:
+1. **Reporte de errores**
+   - Si te encuentras con un **bug**, **comportamiento extraño** o **errores** de la API, puedes crear un reporte describiendo:
+     - Cual fue el comportamiento
+     - Como esperabas que fuese ese comportamiento
+     - Que estabas haciendo
+   - Puedes añadir capturas de pantalla.
+2. **Contribuir con código**
+    - Haz una copia del repositorio (**fork**)
+    - Crea una **nueva rama** para tu contribución:
+       ```bash
+        git checkout -b mi-contribución
+      ```
+    - Sube la rama al repositorio remoto:
+      ```bash
+        git push origin mi-contribución 
+      ```
+    - Abre un **Pull Request** y describe tus cambios.
+3. **Mejora de documentación**
+    - Puedes añadir mejoras a la documentación.
+
+# Licencia
+Copyright 2025 Janire Martinez
+
+Por la presente se concede permiso, libre de cargos, a cualquier persona que obtenga una copia de este software y de los archivos de documentación asociados (el "Software"), a utilizar el Software sin restricción, incluyendo sin limitación los derechos a usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar, y/o vender copias del Software, y a permitir a las personas a las que se les proporcione el Software a hacer lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA "COMO ESTÁ", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR E INCUMPLIMIENTO. EN NINGÚN CASO LOS AUTORES O PROPIETARIOS DE LOS DERECHOS DE AUTOR SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O CUALQUIER OTRO MOTIVO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O SU USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE.
+
+# Contacto
+```
+✉︎ Email: janiremartinez1997@gmail.com
+🐙 GitHub: https://github.com/JanireMG
+```
