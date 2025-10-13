@@ -26,18 +26,26 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         maxAge: 1000 * 60 * 60
     }
 }));
 
-const db = mysql.createConnection(process.env.DATABASE_URL);
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+});
 
 db.connect(err => {
     if (err) console.error("Error de conexión:", err);
     else console.log("Conexión a MySQL OK");
 });
+
+app.get("/health", (req, res) => res.send("OK"));
 
 app.get("/", (req,res)=> {
     res.send("Server OK");
